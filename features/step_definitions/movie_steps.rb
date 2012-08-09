@@ -23,7 +23,18 @@ end
 #  "When I check the following ratings: G"
 
 When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
+  str_rating = rating_list.split
+  str_rating.each do |rating|
+   id = "ratings_#{rating}"
+   if uncheck.nil?
+    check(id)
+   else
+    uncheck(id)
+   end
+  end
   # HINT: use String#split to split up the rating_list, then
   #   iterate over the ratings and reuse the "When I check..." or
   #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
 end
+
+# For filter movie list feature
