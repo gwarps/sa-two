@@ -22,10 +22,15 @@ Background: movies have been added to database
   And I am on the RottenPotatoes home page
 
 Scenario: sort movies alphabetically
+  Given I check all ratings
+  And I press "Refresh"
   When I follow "Movie Title"
   # your steps here
+  Then I should see "Aladdin" before "Amelie"
 
 Scenario: sort movies in increasing order of release date
+  Given I check all ratings
+  And I press "Refresh"
   When I follow "Release Date"
-  # your steps here
+  Then I should see movies sorted by release date
 

@@ -13,9 +13,21 @@ end
 #   on the same page
 
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
+  rows = page.all("table#movies tbody tr")
+  movie_name = []
+  rows.each do |row|
+   row_data = row.all('td').map{|c| c.text.strip}
+   movie_name << row_data[0]
+  end
+  db_name = []
+  Movie.all.each do |movie|
+   db_name<<movie.title
+  end
+  db_name = db_name.sort
+  db_name.eql?(movie_name).should be_true
   #  ensure that that e1 occurs before e2.
   #  page.content  is the entire content of the page as a string.
-  flunk "Unimplemented"
+#flunk "Unimplemented"
 end
 
 # Make it easier to express checking or unchecking several boxes at once
@@ -74,4 +86,20 @@ end
 Then /^I should see all the movies$/ do
  count = page.all("table#movies tbody tr").size
  count.should==Movie.count
+end
+
+Then /^I should see movies sorted by release date$/ do
+  rows = page.all("table#movies tbody tr")
+  release_dates = []
+  rows.each do |row|
+   row_data = row.all('td').map{|c| c.text.strip}
+   release_dates << row_data[2]
+  end
+  db_release=[]
+  Movie.all.each do |movie|
+   db_release << movie.release_date
+  end
+
+  db_release = db_release.sort
+  db_release.eql?(release_dates).should be_true
 end
